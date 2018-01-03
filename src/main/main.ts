@@ -22,15 +22,11 @@ let window: BrowserWindow | null;
 function createWindow() {
     window = new BrowserWindow({ width: 800, height: 600 });
 
-    const loadUrl = url.format({
+    window.loadURL(url.format({
         pathname: path.join(__dirname, "../../static/index.html"),
         protocol: "file:",
         slashes: true
-    });
-
-    console.log(loadUrl);
-
-    window.loadURL(loadUrl);
+    }));
 
     window.webContents.openDevTools();
 
