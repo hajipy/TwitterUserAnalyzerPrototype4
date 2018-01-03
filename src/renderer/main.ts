@@ -62,6 +62,20 @@ const app = new Vue({
 
             setTimeout(() => {
                 this.$data.state = "analyzed";
+
+                this.$data.followEachOther.splice(0, this.$data.followEachOther.length);
+                this.$data.followedOnly.splice(0, this.$data.followedOnly.length);
+                this.$data.followOnly.splice(0, this.$data.followOnly.length);
+
+                const dummyData = {
+                    screenName: "hajimepg",
+                    profileImageUrl: "./hajimepg.jpg",
+                    twitterHomeUrl: "https://twitter.com/hajimepg",
+                };
+
+                this.$data.followEachOther.push(dummyData);
+                this.$data.followedOnly.push(dummyData, dummyData);
+                this.$data.followOnly.push(dummyData, dummyData, dummyData);
             }, 4500);
         },
     }
