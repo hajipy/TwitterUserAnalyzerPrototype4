@@ -90,8 +90,6 @@ ipcMain.on(ipcMessage.analyze, (event, screenName) => {
     }, 4500);
 });
 
-// inversify.decorate(inversify.injectable(), Twitter);
-
 const container = new inversify.Container();
 
 if (Commander.useStub) {
@@ -107,4 +105,3 @@ else {
 }
 
 const twitterClient = container.get<ITwitterClient>(TYPES.TwitterClient);
-console.log(twitterClient);
