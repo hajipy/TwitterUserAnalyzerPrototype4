@@ -1,0 +1,56 @@
+h1 {
+    font-size: 1.4em;
+}
+
+#app {
+    width: 90%;
+    margin: 10px auto 0 auto;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-container div {
+    position: relative;
+    width: 140px;
+    height: 75px;
+    padding-top: 5px;
+    margin-bottom: 10px;
+    border-bottom: solid 2px lightgray;
+    text-align: center;
+}
+
+.flex-container div img {
+    width: 48px;
+    height: 48px;
+}
+
+.flex-container div p {
+    margin: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flex-container div a {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.flex-container div a:hover {
+    background-color: lightblue;
+    opacity: 0.5;
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: all .5s;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0
+}
