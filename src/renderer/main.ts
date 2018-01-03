@@ -1,4 +1,7 @@
+import { ipcRenderer } from "electron";
 import Vue from "vue";
+
+import ipcMessage from "../ipcMessage";
 
 /* tslint:disable:object-literal-sort-keys */
 Vue.component("user-list", {
@@ -41,43 +44,28 @@ const app = new Vue({
     },
     methods: {
         analyze() {
-            this.$data.state = "analyzing";
-            this.$data.analyzeProgresses.splice(0, this.$data.analyzeProgresses.length);
-
-            setTimeout(() => {
-                this.$data.analyzeProgresses.push(`Analyzing (1/3) ...`);
-            }, 1000);
-
-            setTimeout(() => {
-                this.$data.analyzeProgresses.push(`Analyzing (2/3) ...`);
-            }, 2000);
-
-            setTimeout(() => {
-                this.$data.analyzeProgresses.push(`Analyzing (3/3) ...`);
-            }, 3000);
-
-            setTimeout(() => {
-                this.$data.analyzeProgresses.push(`Analyzing finish!!`);
-            }, 4000);
-
-            setTimeout(() => {
-                this.$data.state = "analyzed";
-
-                this.$data.followEachOther.splice(0, this.$data.followEachOther.length);
-                this.$data.followedOnly.splice(0, this.$data.followedOnly.length);
-                this.$data.followOnly.splice(0, this.$data.followOnly.length);
-
-                const dummyData = {
-                    screenName: "hajimepg",
-                    profileImageUrl: "./hajimepg.jpg",
-                    twitterHomeUrl: "https://twitter.com/hajimepg",
-                };
-
-                this.$data.followEachOther.push(dummyData);
-                this.$data.followedOnly.push(dummyData, dummyData);
-                this.$data.followOnly.push(dummyData, dummyData, dummyData);
-            }, 4500);
+            ipcRenderer.send(ipcMessage.analyze, this.$data.analyzeScreenName);
         },
     }
 });
 /* tslint:enable:object-literal-sort-keys */
+
+ipcRenderer.on(ipcMessage.analyzeStart, (event) => {
+    app.$data.state = "analyzing";
+    app.$data.analyzeProgresses.splice(0, app.$data.analyzeProgresses.length);
+    app.$data.followEachOther.splice(0, app.$data.followEachOther.length);
+    app.$data.followedOnly.splice(0, app.$data.followedOnly.length);
+    app.$data.followOnly.splice(0, app.$data.followOnly.length);
+});
+
+ipcRenderer.on(ipcMessage.analyzeProgress, (event, newProgress) => {
+    app.$data.analyzeProgresses.push(newProgress);
+});
+
+ipcRenderer.on(ipcMessage.analyzeFinish, (event, result) => {
+    app.$data.state = "analyzed";
+
+    app.$data.followEachOther.push(...result.followEachOther);
+    app.$data.followedOnly.push(...result.followedOnly);
+    app.$data.followOnly.push(...result.followOnly);
+});

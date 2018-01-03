@@ -38,6 +38,7 @@ const rendererProsessConfig = {
         path: path.resolve(__dirname, "dist/renderer"),
         filename: "bundle.js"
     },
+    target: "electron-renderer",
     module: moduleSetting,
     resolve: resolveSetting
 };
