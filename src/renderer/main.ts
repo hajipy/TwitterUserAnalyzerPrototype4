@@ -32,9 +32,8 @@ Vue.component("user-list", {
 const app = new Vue({
     el: "#app",
     data: {
-        state: "no-analyazed",
+        state: "un-analyazed",
         analyzeScreenName: "",
-        analyzeId: "",
         analyzeProgresses: [],
         followEachOther: [],
         followedOnly: [],
@@ -42,10 +41,28 @@ const app = new Vue({
     },
     methods: {
         analyze() {
-            /* tslint:disable-next-line:no-empty */
-        },
-        updateAnalyazeStatus() {
-            /* tslint:disable-next-line:no-empty */
+            this.$data.state = "analyzing";
+            this.$data.analyzeProgresses.splice(0, this.$data.analyzeProgresses.length);
+
+            setTimeout(() => {
+                this.$data.analyzeProgresses.push(`Analyzing (1/3) ...`);
+            }, 1000);
+
+            setTimeout(() => {
+                this.$data.analyzeProgresses.push(`Analyzing (2/3) ...`);
+            }, 2000);
+
+            setTimeout(() => {
+                this.$data.analyzeProgresses.push(`Analyzing (3/3) ...`);
+            }, 3000);
+
+            setTimeout(() => {
+                this.$data.analyzeProgresses.push(`Analyzing finish!!`);
+            }, 4000);
+
+            setTimeout(() => {
+                this.$data.state = "analyzed";
+            }, 4500);
         },
     }
 });
