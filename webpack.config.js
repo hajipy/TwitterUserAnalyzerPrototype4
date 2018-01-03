@@ -13,14 +13,20 @@ const resolveSetting = {
     extensions: [".ts"]
 };
 
+var nodeSetting = {
+    __dirname: false,
+};
+
 const mainProcessConfig = {
     entry: "./src/main/main.ts",
     output: {
         path: path.resolve(__dirname, "dist/main"),
         filename: "bundle.js"
     },
+    target: "electron-main",
     module: moduleSetting,
-    resolve: resolveSetting
+    resolve: resolveSetting,
+    node: nodeSetting
 };
 
 const rendererProsessConfig = {
