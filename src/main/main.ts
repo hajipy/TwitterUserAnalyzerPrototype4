@@ -1,14 +1,20 @@
 import * as path from "path";
 import * as url from "url";
 
+import * as Commander from "commander";
 import { app, BrowserWindow, ipcMain, screen } from "electron";
-import { Container } from "inversify";
+import * as inversify from "inversify";
+import "reflect-metadata";
+import * as Twitter from "twitter";
 
 import ipcMessage from "../ipcMessage";
 import ITwitterClient from "./ITwitterClient";
 import StubTwitterClient from "./stub/stubTwitterClient";
-import StubTwitterClient2 from "./stub/stubTwitterClient2";
 import TYPES from "./types";
+
+Commander
+    .option("--use-stub")
+    .parse(process.argv);
 
 let window: BrowserWindow | null;
 
@@ -84,8 +90,21 @@ ipcMain.on(ipcMessage.analyze, (event, screenName) => {
     }, 4500);
 });
 
-const container = new Container();
-container.bind<ITwitterClient>(TYPES.TwitterClient).to(StubTwitterClient2);
+// inversify.decorate(inversify.injectable(), Twitter);
+
+const container = new inversify.Container();
+
+if (Commander.useStub) {
+    container.bind<ITwitterClient>(TYPES.TwitterClient).to(StubTwitterClient);
+}
+else {
+    container.bind<ITwitterClient>(TYPES.TwitterClient).toConstantValue(new Twitter({
+        access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    }));
+}
 
 const twitterClient = container.get<ITwitterClient>(TYPES.TwitterClient);
-twitterClient.hello();
+console.log(twitterClient);

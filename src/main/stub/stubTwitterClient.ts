@@ -38,10 +38,6 @@ class StubTwitterClient implements ITwitterClient {
             callback(null, { next_cursor: nextCursor, users: responseUsers });
         }
     }
-
-    public hello() {
-        console.log("hello from StubTwitterClient");
-    }
 }
 
 export default StubTwitterClient;
