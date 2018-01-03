@@ -2,8 +2,13 @@ import * as path from "path";
 import * as url from "url";
 
 import { app, BrowserWindow, ipcMain, screen } from "electron";
+import { Container } from "inversify";
 
 import ipcMessage from "../ipcMessage";
+import ITwitterClient from "./ITwitterClient";
+import StubTwitterClient from "./stub/stubTwitterClient";
+import StubTwitterClient2 from "./stub/stubTwitterClient2";
+import TYPES from "./types";
 
 let window: BrowserWindow | null;
 
@@ -78,3 +83,9 @@ ipcMain.on(ipcMessage.analyze, (event, screenName) => {
         event.sender.send(ipcMessage.analyzeFinish, result);
     }, 4500);
 });
+
+const container = new Container();
+container.bind<ITwitterClient>(TYPES.TwitterClient).to(StubTwitterClient2);
+
+const twitterClient = container.get<ITwitterClient>(TYPES.TwitterClient);
+twitterClient.hello();

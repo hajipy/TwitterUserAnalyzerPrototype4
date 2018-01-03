@@ -6,6 +6,8 @@
   "dependencies": {
     "@types/node": "^8.5.2",
     "electron": "^1.7.10",
+    "inversify": "^4.9.0",
+    "reflect-metadata": "^0.1.10",
     "ts-loader": "^3.2.0",
     "tslint": "^5.8.0",
     "typescript": "^2.6.2",
