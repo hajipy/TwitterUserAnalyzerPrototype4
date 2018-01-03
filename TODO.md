@@ -15,7 +15,7 @@
         - [ ] profileImageDownloadResult.ts
         - [ ] repository
             - [ ] analyzeTaskRepository.ts
-            - [ ] profileImageRepository.ts
+            - [x] profileImageRepository.ts
         - [x] stub
             - [x] stubTwitterClient.ts
         - [x] twitterGateway.ts

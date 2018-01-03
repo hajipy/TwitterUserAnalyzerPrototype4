@@ -8,7 +8,9 @@ import "reflect-metadata";
 import * as Twitter from "twitter";
 
 import ipcMessage from "../ipcMessage";
+import IProfileImageRepository from "./IProfileImageRepository";
 import ITwitterClient from "./ITwitterClient";
+import NeDbProfileImageRepository from "./repository/neDbProfileImageRepository";
 import StubTwitterClient from "./stub/stubTwitterClient";
 import TwitterGateway from "./twitterGateway";
 import TYPES from "./types";
@@ -33,82 +35,34 @@ async function initContainer() {
     }
     container.bind<TwitterGateway>(TYPES.TwitterGateway).to(TwitterGateway);
 
+    const profileImageRepository = new NeDbProfileImageRepository();
+    await profileImageRepository.init();
+    container.bind<IProfileImageRepository>(TYPES.ProfileImageRepository).toConstantValue(profileImageRepository);
+
     return container;
 }
 
-function initElectron() {
-    let window: BrowserWindow | null;
+let window: BrowserWindow | null;
 
-    function createWindow() {
-        window = new BrowserWindow({ width: 800, height: 600 });
+function createWindow() {
+    window = new BrowserWindow({ width: 800, height: 600 });
 
-        window.loadURL(url.format({
-            pathname: path.join(__dirname, "../../static/index.html"),
-            protocol: "file:",
-            slashes: true
-        }));
+    window.loadURL(url.format({
+        pathname: path.join(__dirname, "../../static/index.html"),
+        protocol: "file:",
+        slashes: true
+    }));
 
-        window.webContents.openDevTools();
+    window.webContents.openDevTools();
 
-        window.on("closed", () => {
+    window.on("closed", () => {
         window = null;
-        });
-    }
-
-    app.on("ready", createWindow);
-
-    app.on("window-all-closed", () => {
-        if (process.platform !== "darwin") {
-            app.quit();
-        }
-    });
-
-    app.on("activate", () => {
-        if (window === null) {
-            createWindow();
-        }
-    });
-
-    ipcMain.on(ipcMessage.analyze, (event, screenName) => {
-        event.sender.send(ipcMessage.analyzeStart);
-
-        setTimeout(() => {
-            event.sender.send(ipcMessage.analyzeProgress, `Analyzing (1/3) ...`);
-        }, 1000);
-
-        setTimeout(() => {
-            event.sender.send(ipcMessage.analyzeProgress, `Analyzing (2/3) ...`);
-        }, 2000);
-
-        setTimeout(() => {
-            event.sender.send(ipcMessage.analyzeProgress, `Analyzing (3/3) ...`);
-        }, 3000);
-
-        setTimeout(() => {
-            event.sender.send(ipcMessage.analyzeProgress, `Analyzing finish!!`);
-        }, 4000);
-
-        setTimeout(() => {
-            /* tslint:disable:object-literal-sort-keys */
-            const dummyData = {
-                screenName: "hajimepg",
-                profileImageUrl: "./hajimepg.jpg",
-                twitterHomeUrl: "https://twitter.com/hajimepg",
-            };
-
-            const result = {
-                followEachOther: [dummyData],
-                followedOnly: [dummyData, dummyData],
-                followOnly: [dummyData, dummyData, dummyData]
-            };
-            /* tslint:enable:object-literal-sort-keys */
-
-            event.sender.send(ipcMessage.analyzeFinish, result);
-        }, 4500);
     });
 }
 
-initContainer().then((container) => {
+app.on("ready", async () => {
+    const container = await initContainer();
+
     const twitterGateway = container.get<TwitterGateway>(TYPES.TwitterGateway);
 
     twitterGateway.on("onRequest", (endpoint, options) => {
@@ -129,7 +83,58 @@ initContainer().then((container) => {
             // console.log(JSON.stringify(followers, null, 4));
         });
 
-    initElectron();
-}).catch((error) => {
-    console.log(error);
+    const profileImageRepository = container.get<IProfileImageRepository>(TYPES.ProfileImageRepository);
+    console.log(JSON.stringify(profileImageRepository.find("hajimepg"), null, 4));
+
+    createWindow();
+});
+
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") {
+        app.quit();
+    }
+});
+
+app.on("activate", () => {
+    if (window === null) {
+        createWindow();
+    }
+});
+
+ipcMain.on(ipcMessage.analyze, (event, screenName) => {
+    event.sender.send(ipcMessage.analyzeStart);
+
+    setTimeout(() => {
+        event.sender.send(ipcMessage.analyzeProgress, `Analyzing (1/3) ...`);
+    }, 1000);
+
+    setTimeout(() => {
+        event.sender.send(ipcMessage.analyzeProgress, `Analyzing (2/3) ...`);
+    }, 2000);
+
+    setTimeout(() => {
+        event.sender.send(ipcMessage.analyzeProgress, `Analyzing (3/3) ...`);
+    }, 3000);
+
+    setTimeout(() => {
+        event.sender.send(ipcMessage.analyzeProgress, `Analyzing finish!!`);
+    }, 4000);
+
+    setTimeout(() => {
+        /* tslint:disable:object-literal-sort-keys */
+        const dummyData = {
+            screenName: "hajimepg",
+            profileImageUrl: "./hajimepg.jpg",
+            twitterHomeUrl: "https://twitter.com/hajimepg",
+        };
+
+        const result = {
+            followEachOther: [dummyData],
+            followedOnly: [dummyData, dummyData],
+            followOnly: [dummyData, dummyData, dummyData]
+        };
+        /* tslint:enable:object-literal-sort-keys */
+
+        event.sender.send(ipcMessage.analyzeFinish, result);
+    }, 4500);
 });
