@@ -2,7 +2,7 @@ import * as path from "path";
 import * as url from "url";
 
 import * as Commander from "commander";
-import { app, BrowserWindow, ipcMain, screen } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as inversify from "inversify";
 import "reflect-metadata";
 import * as Twitter from "twitter";
