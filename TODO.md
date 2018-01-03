@@ -4,18 +4,18 @@
     - [ ] server
         - [ ] apiServerMiddleware.ts
         - [ ] backgroundJob.ts
-        - [ ] ITwitterClient.ts
+        - [x] ITwitterClient.ts
         - [x] main.ts
         - [ ] model
             - [ ] analyzeResult.ts
             - [ ] analyzeTask.ts
             - [ ] profileImage.ts
-            - [ ] user.ts
+            - [x] user.ts
         - [ ] profileImageDownloader.ts
         - [ ] profileImageDownloadResult.ts
         - [ ] repository
             - [ ] analyzeTaskRepository.ts
             - [ ] profileImageRepository.ts
-        - [ ] stub
-            - [ ] stubTwitterClient.ts
+        - [x] stub
+            - [x] stubTwitterClient.ts
         - [ ] twitterGateway.ts
