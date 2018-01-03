@@ -10,7 +10,10 @@ const moduleSetting = {
 };
 
 const resolveSetting = {
-    extensions: [".ts"]
+    extensions: [".ts"],
+    alias: {
+        "vue$": "vue/dist/vue.esm.js"
+    }
 };
 
 var nodeSetting = {
