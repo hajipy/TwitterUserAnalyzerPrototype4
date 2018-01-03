@@ -10,6 +10,7 @@ import * as Twitter from "twitter";
 import ipcMessage from "../ipcMessage";
 import ITwitterClient from "./ITwitterClient";
 import StubTwitterClient from "./stub/stubTwitterClient";
+import TwitterGateway from "./twitterGateway";
 import TYPES from "./types";
 
 Commander
@@ -103,5 +104,18 @@ else {
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
     }));
 }
+container.bind<TwitterGateway>(TYPES.TwitterGateway).to(TwitterGateway);
 
-const twitterClient = container.get<ITwitterClient>(TYPES.TwitterClient);
+const twitterGateway = container.get<TwitterGateway>(TYPES.TwitterGateway);
+
+/* tslint:disable:no-empty */
+twitterGateway.getFollowers(
+    "hajimepg",
+    () => {},
+    () => {},
+    () => {},
+    () => {}
+).then((followers) => {
+    console.log(JSON.stringify(followers, null, 4));
+});
+/* tslint:enable:no-empty */
