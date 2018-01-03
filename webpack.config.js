@@ -1,20 +1,38 @@
 const path = require("path");
 
-module.exports = {
+const moduleSetting = {
+    rules: [
+        {
+            test: /\.ts$/,
+            use: "ts-loader"
+        }
+    ]
+};
+
+const resolveSetting = {
+    extensions: [".ts"]
+};
+
+const mainProcessConfig = {
     entry: "./src/main/main.ts",
     output: {
         path: path.resolve(__dirname, "dist/main"),
         filename: "bundle.js"
     },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: "ts-loader"
-            }
-        ]
-    },
-    resolve: {
-        extensions: [".ts"]
-    }
+    module: moduleSetting,
+    resolve: resolveSetting
 };
+
+const rendererProsessConfig = {
+    entry: "./src/renderer/main.ts",
+    output: {
+        path: path.resolve(__dirname, "dist/renderer"),
+        filename: "bundle.js"
+    },
+    module: moduleSetting,
+    resolve: resolveSetting
+};
+
+module.exports = [
+    mainProcessConfig, rendererProsessConfig
+];
