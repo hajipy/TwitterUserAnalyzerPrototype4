@@ -8,7 +8,25 @@
 
     <body>
         <div id="app">
-            {{ message }}
+            <form>
+                <label>Screen Name</label>
+                <input type="text" v-model="analyzeScreenName">
+                <button type="button" v-on:click="analyze">Analyze</button>
+            </form>
+
+            <div v-if="state === 'analyzing'">
+                <p>
+                    <template v-for="progress in analyzeProgresses">
+                        {{ progress }}<br />
+                    </template>
+                </p>
+            </div>
+
+            <div v-else-if="state === 'analyzed'">
+                <user-list name="followEachOther" v-bind:list="followEachOther" class="follow-each-other"></user-list>
+                <user-list name="followedOnly"    v-bind:list="followedOnly"    class="followed-only"    ></user-list>
+                <user-list name="followOnly"      v-bind:list="followOnly"      class="follow-only"      ></user-list>
+            </div>
         </div>
         <script src="../dist/renderer/bundle.js"></script>
     </body>
