@@ -18,4 +18,4 @@
             - [ ] profileImageRepository.ts
         - [x] stub
             - [x] stubTwitterClient.ts
-        - [ ] twitterGateway.ts
+        - [x] twitterGateway.ts

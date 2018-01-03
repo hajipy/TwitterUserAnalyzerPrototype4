@@ -104,14 +104,20 @@ container.bind<TwitterGateway>(TYPES.TwitterGateway).to(TwitterGateway);
 
 const twitterGateway = container.get<TwitterGateway>(TYPES.TwitterGateway);
 
-/* tslint:disable:no-empty */
-twitterGateway.getFollowers(
-    "hajimepg",
-    () => {},
-    () => {},
-    () => {},
-    () => {}
-).then((followers) => {
-    console.log(JSON.stringify(followers, null, 4));
+twitterGateway.on("onRequest", (endpoint, options) => {
+    console.log(`onRequest endpoint=${endpoint}, options=${options}`);
 });
-/* tslint:enable:no-empty */
+twitterGateway.on("onRateLimit", (endpoint, options) => {
+    console.log(`onRateLimit endpoint=${endpoint}, options=${options}`);
+});
+twitterGateway.on("onRequestSuccuess", (endpoint, options, response) => {
+    console.log(`onRequestSuccuess endpoint=${endpoint}, options=${options} responses.length=${response.length}`);
+});
+twitterGateway.on("onComplete", (endpoint, options, responses) => {
+    console.log(`onComplete endpoint=${endpoint}, options=${options} responses.length=${responses.length}`);
+});
+
+twitterGateway.getFollowers("hajimepg")
+    .then((followers) => {
+        // console.log(JSON.stringify(followers, null, 4));
+    });
