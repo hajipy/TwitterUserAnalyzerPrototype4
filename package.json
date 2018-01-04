@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^8.5.2",
+    "axios": "^0.17.1",
     "commander": "^2.12.2",
     "electron": "^1.7.10",
     "inversify": "^4.9.0",

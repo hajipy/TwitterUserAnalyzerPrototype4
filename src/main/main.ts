@@ -8,6 +8,8 @@ import "reflect-metadata";
 import * as Twitter from "twitter";
 
 import ipcMessage from "../ipcMessage";
+import AxiosProfileImageDownloader from "./axiosProfileImageDownloader";
+import IProfileImageDownloader from "./interface/IProfileImageDownloader";
 import IProfileImageRepository from "./interface/IProfileImageRepository";
 import ITwitterClient from "./interface/ITwitterClient";
 import NeDbProfileImageRepository from "./repository/neDbProfileImageRepository";
@@ -38,6 +40,8 @@ async function initContainer() {
     const profileImageRepository = new NeDbProfileImageRepository();
     await profileImageRepository.init();
     container.bind<IProfileImageRepository>(TYPES.ProfileImageRepository).toConstantValue(profileImageRepository);
+
+    container.bind<IProfileImageDownloader>(TYPES.ProfileImageDownloader).to(AxiosProfileImageDownloader);
 
     return container;
 }
@@ -85,6 +89,8 @@ app.on("ready", async () => {
 
     const profileImageRepository = container.get<IProfileImageRepository>(TYPES.ProfileImageRepository);
     console.log(JSON.stringify(profileImageRepository.find("hajimepg"), null, 4));
+
+    const profileImageDownloader = container.get<IProfileImageDownloader>(TYPES.ProfileImageDownloader);
 
     createWindow();
 });

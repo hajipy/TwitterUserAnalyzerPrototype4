@@ -1,5 +1,6 @@
 export default {
-    ProfileImageRepository: Symbol("IProfileImageRepository"),
+    ProfileImageDownloader: Symbol("ProfileImageDownloader"),
+    ProfileImageRepository: Symbol("ProfileImageRepository"),
     TwitterClient: Symbol("TwitterClient"),
     TwitterGateway: Symbol("TwitterGateway"),
 };

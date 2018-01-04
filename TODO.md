@@ -9,10 +9,10 @@
         - [ ] model
             - [ ] analyzeResult.ts
             - [ ] analyzeTask.ts
-            - [ ] profileImage.ts
+            - [x] profileImage.ts
             - [x] user.ts
-        - [ ] profileImageDownloader.ts
-        - [ ] profileImageDownloadResult.ts
+        - [x] profileImageDownloader.ts
+        - [x] profileImageDownloadResult.ts
         - [ ] repository
             - [ ] analyzeTaskRepository.ts
             - [x] profileImageRepository.ts
