@@ -77,10 +77,12 @@ class NeDbProfileImageRepository implements IProfileImageRepository {
             this.db.findOne({ screenName }, (error, doc: any | null) => {
                 if (error !== null) {
                     reject(error);
+                    return;
                 }
 
                 if (doc === null) {
-                    return null;
+                    resolve(null);
+                    return;
                 }
 
                 resolve(new ProfileImage(doc._id, doc.screenName, doc.sourceUrl, doc.localFileName));
