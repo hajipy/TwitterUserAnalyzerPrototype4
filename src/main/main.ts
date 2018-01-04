@@ -8,8 +8,8 @@ import "reflect-metadata";
 import * as Twitter from "twitter";
 
 import ipcMessage from "../ipcMessage";
-import IProfileImageRepository from "./IProfileImageRepository";
-import ITwitterClient from "./ITwitterClient";
+import IProfileImageRepository from "./interface/IProfileImageRepository";
+import ITwitterClient from "./interface/ITwitterClient";
 import NeDbProfileImageRepository from "./repository/neDbProfileImageRepository";
 import StubTwitterClient from "./stub/stubTwitterClient";
 import TwitterGateway from "./twitterGateway";

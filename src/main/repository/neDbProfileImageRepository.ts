@@ -3,7 +3,7 @@ import * as path from "path";
 
 import * as DataStore from "nedb";
 
-import IProfileImageRepository from "../IProfileImageRepository";
+import IProfileImageRepository from "../interface/IProfileImageRepository";
 import ProfileImage from "../model/profileImage";
 
 class NeDbProfileImageRepository implements IProfileImageRepository {

@@ -4,7 +4,7 @@ import * as process from "process";
 import { injectable } from "inversify";
 import "reflect-metadata";
 
-import ITwitterClient from "../ITwitterClient";
+import ITwitterClient from "../interface/ITwitterClient";
 import User from "../model/user";
 
 /* tslint:disable:variable-name */

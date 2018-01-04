@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { decorate, inject, injectable } from "inversify";
 
-import ITwitterClient from "./ITwitterClient";
+import ITwitterClient from "./interface/ITwitterClient";
 import User from "./model/user";
 import TYPES from "./types";
 
