@@ -3,6 +3,8 @@ import "reflect-metadata";
 import * as inversify from "inversify";
 import * as Twitter from "twitter";
 
+import TYPES from "./types";
+
 import IProfileImageDownloader from "./interface/IProfileImageDownloader";
 import IProfileImageRepository from "./interface/IProfileImageRepository";
 import ITwitterClient from "./interface/ITwitterClient";
@@ -12,8 +14,6 @@ import BackgroundJob from "./backgroundJob";
 import NeDbProfileImageRepository from "./repository/neDbProfileImageRepository";
 import StubTwitterClient from "./stub/stubTwitterClient";
 import TwitterGateway from "./twitterGateway";
-
-import TYPES from "./types";
 
 export default async function initContainer(useStub: boolean): Promise<inversify.Container> {
     const container = new inversify.Container();

@@ -1,11 +1,13 @@
 import * as fs from "fs";
 import * as path from "path";
 
+import { injectable } from "inversify";
 import * as DataStore from "nedb";
 
 import IProfileImageRepository from "../interface/IProfileImageRepository";
 import ProfileImage from "../model/profileImage";
 
+@injectable()
 class NeDbProfileImageRepository implements IProfileImageRepository {
     public readonly imageDir = "db/profileImage";
 
