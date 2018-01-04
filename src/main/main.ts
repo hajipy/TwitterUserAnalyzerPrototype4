@@ -3,51 +3,17 @@ import * as url from "url";
 
 import * as Commander from "commander";
 import { app, BrowserWindow, ipcMain } from "electron";
-import * as inversify from "inversify";
 import "reflect-metadata";
-import * as Twitter from "twitter";
 
 import ipcMessage from "../ipcMessage";
-import AxiosProfileImageDownloader from "./axiosProfileImageDownloader";
 import BackgroundJob from "./backgroundJob";
-import IProfileImageDownloader from "./interface/IProfileImageDownloader";
-import IProfileImageRepository from "./interface/IProfileImageRepository";
-import ITwitterClient from "./interface/ITwitterClient";
-import NeDbProfileImageRepository from "./repository/neDbProfileImageRepository";
-import StubTwitterClient from "./stub/stubTwitterClient";
-import TwitterGateway from "./twitterGateway";
+
+import initContainer from "./inversify.config";
 import TYPES from "./types";
 
 Commander
     .option("--use-stub")
     .parse(process.argv);
-
-async function initContainer() {
-    const container = new inversify.Container();
-
-    if (Commander.useStub) {
-        container.bind<ITwitterClient>(TYPES.TwitterClient).to(StubTwitterClient);
-    }
-    else {
-        container.bind<ITwitterClient>(TYPES.TwitterClient).toConstantValue(new Twitter({
-            access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-            access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-            consumer_key: process.env.TWITTER_CONSUMER_KEY,
-            consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        }));
-    }
-    container.bind<TwitterGateway>(TYPES.TwitterGateway).to(TwitterGateway);
-
-    const profileImageRepository = new NeDbProfileImageRepository();
-    await profileImageRepository.init();
-    container.bind<IProfileImageRepository>(TYPES.ProfileImageRepository).toConstantValue(profileImageRepository);
-
-    container.bind<IProfileImageDownloader>(TYPES.ProfileImageDownloader).to(AxiosProfileImageDownloader);
-
-    container.bind<BackgroundJob>(TYPES.BackgroundJob).to(BackgroundJob);
-
-    return container;
-}
 
 let window: BrowserWindow | null;
 
@@ -68,7 +34,7 @@ function createWindow() {
 }
 
 app.on("ready", async () => {
-    const container = await initContainer();
+    const container = await initContainer(Commander.useStub);
 
     ipcMain.on(ipcMessage.analyze, (event, screenName) => {
         const backgroundJob = container.get<BackgroundJob>(TYPES.BackgroundJob);
