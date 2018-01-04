@@ -59,13 +59,12 @@ class NeDbProfileImageRepository implements IProfileImageRepository {
                 const options = { upsert: true, returnUpdatedDocs: true };
 
                 /* tslint:disable-next-line:no-shadowed-variable */
-                this.db.update(query, update, options, (error, numAffected, affectedDocuments) => {
+                this.db.update(query, update, options, (error, numAffected, doc) => {
                     if (error !== null) {
                         reject(error);
                         return;
                     }
 
-                    const doc = affectedDocuments[0];
                     resolve(new ProfileImage(doc._id, doc.screenName, doc.sourceUrl, doc.localFileName));
                 });
             });
