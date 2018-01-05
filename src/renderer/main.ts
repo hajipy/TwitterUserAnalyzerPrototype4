@@ -44,13 +44,12 @@ const app = new Vue({
     },
     methods: {
         analyze() {
+            if (this.analyzeScreenName.length === 0) {
+                return;
+            }
+
             ipcRenderer.send(ipcMessage.analyze, this.$data.analyzeScreenName);
         },
-    },
-    computed: {
-        isButtonDisabled(): boolean {
-            return this.analyzeScreenName.length === 0;
-        }
     }
 });
 /* tslint:enable:object-literal-sort-keys */

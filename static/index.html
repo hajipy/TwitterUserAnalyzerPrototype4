@@ -8,10 +8,9 @@
 
     <body>
         <div id="app">
-            <form>
+            <form v-on:submit.prevent="analyze">
                 <label>Screen Name</label>
                 <input type="text" v-model="analyzeScreenName">
-                <button type="button" v-on:click="analyze" v-bind:disabled="isButtonDisabled">Analyze</button>
             </form>
 
             <div v-if="state === 'analyzing'">
