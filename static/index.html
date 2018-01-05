@@ -9,8 +9,8 @@
     <body>
         <div id="app">
             <form v-on:submit.prevent="analyze">
-                <label>Screen Name</label>
-                <input type="text" v-model="analyzeScreenName">
+                <label>Screen name to analyze</label><br />
+                <input class="input-screen-name" type="text" v-model="analyzeScreenName" placeholder="hajimepg">
             </form>
 
             <div v-if="state === 'analyzing'">

@@ -1,3 +1,7 @@
+html {
+    font-family: Arial, sans-serif;
+}
+
 h1 {
     font-size: 1.4em;
 }
@@ -5,6 +9,21 @@ h1 {
 #app {
     width: 90%;
     margin: 10px auto 0 auto;
+}
+
+form label {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.input-screen-name {
+    border: solid 1px #ccc;
+    padding: 5px;
+    margin: 5px 0 20px;
+    font-size: 1.3em;
+    width: 300px;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 1px 4px 9px -6px rgba(0, 0, 0, 0.5);
 }
 
 .flex-container {
