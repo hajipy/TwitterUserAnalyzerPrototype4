@@ -3,4 +3,5 @@ export default {
     analyzeFinish: "analyzeFinish",
     analyzeProgress: "analyzeProgress",
     analyzeStart: "analyzeStart",
+    anylyzeError: "anylyzeError",
 };

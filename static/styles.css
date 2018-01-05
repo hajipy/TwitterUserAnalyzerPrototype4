@@ -26,6 +26,13 @@ form label {
     -webkit-box-shadow: inset 1px 4px 9px -6px rgba(0, 0, 0, 0.5);
 }
 
+.error {
+    background-color: lavenderblush;
+    border: solid 1px pink;
+    border-radius: 3px;
+    padding: 5px;
+}
+
 .flex-container {
     display: flex;
     flex-wrap: wrap;
