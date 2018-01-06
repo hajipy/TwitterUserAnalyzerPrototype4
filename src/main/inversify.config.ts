@@ -29,7 +29,7 @@ export default async function initContainer(useStub: boolean): Promise<inversify
             consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
         }));
     }
-    container.bind<TwitterGateway>(TYPES.TwitterGateway).to(TwitterGateway);
+    container.bind<TwitterGateway>(TYPES.TwitterGateway).to(TwitterGateway).inSingletonScope();
 
     const profileImageRepository = new NeDbProfileImageRepository();
     await profileImageRepository.init();

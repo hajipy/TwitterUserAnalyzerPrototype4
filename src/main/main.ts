@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as path from "path";
 import * as url from "url";
 
@@ -7,11 +8,13 @@ import "reflect-metadata";
 
 import ipcMessage from "../ipcMessage";
 import BackgroundJob from "./backgroundJob";
+import TwitterGateway from "./twitterGateway";
 
 import initContainer from "./inversify.config";
 import TYPES from "./types";
 
 Commander
+    .option("--create-stub")
     .option("--use-stub")
     .parse(process.argv);
 
@@ -60,6 +63,18 @@ app.on("ready", async () => {
             event.sender.send(ipcMessage.anylyzeError, error.message);
         });
     });
+
+    if (Commander.createStub) {
+        const twitterGateway = container.get<TwitterGateway>(TYPES.TwitterGateway);
+        twitterGateway.on("onComplete", (endpoint, options, responses) => {
+            if (endpoint === "followers/list") {
+                fs.writeFileSync("./stubData/stubTwitterClientDataFollowers.json", JSON.stringify(responses, null, 4));
+            }
+            else if (endpoint === "friends/list") {
+                fs.writeFileSync("./stubData/stubTwitterClientDataFriends.json", JSON.stringify(responses, null, 4));
+            }
+        });
+    }
 
     createWindow();
 });
