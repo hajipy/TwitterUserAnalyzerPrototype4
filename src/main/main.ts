@@ -51,8 +51,8 @@ app.on("ready", async () => {
             event.sender.send(ipcMessage.analyzeFinish, result);
         });
 
-        backgroundJob.analyze(screenName).catch((error) => {
-            event.sender.send(ipcMessage.anylyzeError, error);
+        backgroundJob.analyze(screenName).catch((error: Error) => {
+            event.sender.send(ipcMessage.anylyzeError, error.message);
         });
     });
 

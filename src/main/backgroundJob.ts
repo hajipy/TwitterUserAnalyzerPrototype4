@@ -49,7 +49,7 @@ class BackgroundJob extends EventEmitter {
             friends = await this.twitterGateway.getFriends(screenName);
         }
         catch (error) {
-            throw new Error(JSON.stringify(error, null, 4));
+            throw new Error(error[0].message);
         }
 
         this.emit("updateProgress", "user grouping start");
