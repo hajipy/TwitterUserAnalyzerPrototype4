@@ -2,7 +2,7 @@ import * as path from "path";
 import * as url from "url";
 
 import * as Commander from "commander";
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, shell } from "electron";
 import "reflect-metadata";
 
 import ipcMessage from "../ipcMessage";
@@ -19,6 +19,11 @@ let window: BrowserWindow | null;
 
 function createWindow() {
     window = new BrowserWindow({ width: 800, height: 600 });
+
+    window.webContents.on("new-window", (event, openUrl) => {
+        event.preventDefault();
+        shell.openExternal(openUrl);
+    });
 
     window.loadURL(url.format({
         pathname: path.join(__dirname, "../../static/index.html"),
